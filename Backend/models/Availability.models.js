@@ -2,9 +2,12 @@ import mongoose, { Schema } from "mongoose";
 
 const availabilitySchema = new Schema(
   {
+    _id: {
+      type: String, //setting custom id
+      required: true,
+    },
     branch: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Branch",
+      type: String,
       required: true,
     },
     date: {
