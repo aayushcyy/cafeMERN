@@ -2,14 +2,20 @@ import mongoose, { Schema } from "mongoose";
 
 const bookingsSchema = new Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    bookingId: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: Number,
       required: true,
     },
     branch: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Branch",
+      type: String,
       required: true,
     },
     date: {
@@ -21,7 +27,7 @@ const bookingsSchema = new Schema(
       required: true,
     },
     amountPaid: {
-      type: Number,
+      type: String,
       required: true,
     },
     transactionId: {
@@ -32,4 +38,4 @@ const bookingsSchema = new Schema(
   { timestamps: true }
 );
 
-export const Bookings = mongoose.Schema("Bookings", bookingsSchema);
+export const Bookings = mongoose.model("Bookings", bookingsSchema);
