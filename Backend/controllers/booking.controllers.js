@@ -1,6 +1,7 @@
 import express from "express";
 import { Bookings } from "../models/Bookings.models.js";
 import { User } from "../models/Users.models.js";
+import { Availability } from "../models/Availability.models.js";
 
 const booking = async (req, res) => {
   const id = req.params.id;
@@ -60,6 +61,17 @@ const booking = async (req, res) => {
       return res
         .status(404)
         .json({ msg: "User not found! Booking not linked to profile." });
+    }
+
+    const updatedAvailability = await Availability.findOneAndUpdate(
+      { _id: `${branch}-${date}`, "slots.time": slot },
+      { $set: { "slots.$.isBooked": true } },
+      { new: true, runValidators: true }
+    );
+
+    // Check if document was found
+    if (!updatedAvailability) {
+      return res.status(404).json({ msg: "Availability or slot not found!" });
     }
 
     res.status(201).json({
