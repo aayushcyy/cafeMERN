@@ -1,5 +1,6 @@
 import express from "express";
 import { Bookings } from "../models/Bookings.models.js";
+import { User } from "../models/Users.models.js";
 
 const booking = async (req, res) => {
   const id = req.params.id;
@@ -37,12 +38,40 @@ const booking = async (req, res) => {
 
     const createdBooking = await bookingDoc.save();
 
+    const updatedUser = await User.findOneAndUpdate(
+      { phone: phone },
+      {
+        $push: {
+          bookings: {
+            bookingId: id,
+            bookingDate: date,
+            branch: branch.toLowerCase(),
+            slot: slot,
+            amountPaid: "Rs.200",
+            transactionId: "0FVZ85UR024SJ",
+          },
+        },
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      // Optional: rollback bookingDoc if critical
+      return res
+        .status(404)
+        .json({ msg: "User not found! Booking not linked to profile." });
+    }
+
     res.status(201).json({
-      msg: `Congratulation ${name.toUpperCase()}, your slot has been booked!`,
+      msg: `Congratulation ${updatedUser.name.toUpperCase()}, your slot has been booked!`,
       Receipt: createdBooking,
+      profile: updatedUser,
     });
   } catch (error) {
-    res.status(500).json({ msg: "Error booking the slot", error: error });
+    console.error("Booking error:", error);
+    res
+      .status(500)
+      .json({ msg: "Error booking the slot", error: error.message });
   }
 };
 
