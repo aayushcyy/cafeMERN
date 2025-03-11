@@ -13,7 +13,7 @@ const booking = async (req, res) => {
     // Check if a booking with the same bookingId, date, branch, and slot already exists
     const existingBooking = await Bookings.findOne({
       bookingId: id,
-      date: date,
+      date: date.toLowerCase(),
       branch: branch.toLowerCase(),
       slot: slot,
     });
@@ -31,7 +31,7 @@ const booking = async (req, res) => {
       name: name,
       phone: phone,
       branch: branch.toLowerCase(),
-      date: date,
+      date: date.toLowerCase(),
       slot: slot,
       amountPaid: "Rs.200",
       transactionId: "0FVZ85UR024SJ",
@@ -45,7 +45,7 @@ const booking = async (req, res) => {
         $push: {
           bookings: {
             bookingId: id,
-            bookingDate: date,
+            bookingDate: date.toLowerCase(),
             branch: branch.toLowerCase(),
             slot: slot,
             amountPaid: "Rs.200",
@@ -64,8 +64,8 @@ const booking = async (req, res) => {
     }
 
     const updatedAvailability = await Availability.findOneAndUpdate(
-      { _id: `${branch}-${date}`, "slots.time": slot },
-      { $set: { "slots.$.isBooked": true } },
+      { _id: `${branch}-${date.toLowerCase()}`, "slots.time": slot },
+      { $set: { "slots.$.isBooked": false } },
       { new: true, runValidators: true }
     );
 

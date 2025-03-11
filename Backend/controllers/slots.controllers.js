@@ -8,59 +8,59 @@ const slotsAvailable = async (req, res) => {
 
   try {
     const checkAvailability = await Availability.findOne({
-      date: date,
+      date: date.toLowerCase(),
       branch: branch,
     });
 
     if (!checkAvailability) {
       const newAvailabilityDoc = new Availability({
-        _id: `${branch}-${date}`,
+        _id: `${branch}-${date.toLowerCase()}`,
         branch: branch,
-        date: date,
+        date: date.toLowerCase(),
         slots: [
           {
             time: "10AM - 11AM",
-            isBooked: false,
+            isBooked: true,
           },
           {
             time: "11AM - 12PM",
-            isBooked: false,
+            isBooked: true,
           },
           {
             time: "12PM - 1PM",
-            isBooked: false,
+            isBooked: true,
           },
           {
             time: "1PM - 2PM",
-            isBooked: false,
+            isBooked: true,
           },
           {
             time: "2PM - 3PM",
-            isBooked: false,
+            isBooked: true,
           },
           {
             time: "3PM - 4PM",
-            isBooked: false,
+            isBooked: true,
           },
           {
             time: "4PM - 5PM",
-            isBooked: false,
+            isBooked: true,
           },
           {
             time: "5PM - 6PM",
-            isBooked: false,
+            isBooked: true,
           },
           {
             time: "6PM - 7PM",
-            isBooked: false,
+            isBooked: true,
           },
           {
             time: "7PM - 8PM",
-            isBooked: false,
+            isBooked: true,
           },
           {
             time: "8PM - 9PM",
-            isBooked: false,
+            isBooked: true,
           },
         ],
       });
