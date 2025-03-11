@@ -22,13 +22,13 @@ const userSchema = new Schema(
     bookings: [
       {
         bookingId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Booking",
+          type: String,
         },
-        bookingDate: { type: String },
+        bookingDate: {
+          type: String,
+        },
         branch: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Branch",
+          type: String,
         },
         slot: {
           type: String,
