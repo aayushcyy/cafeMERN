@@ -43,15 +43,15 @@ export default function page() {
   return (
     <div className="flex min-h-screen flex-col px-24 bg-[#EDF4F2] text-[#1e2b23]">
       <MyNavbar />
-      <div className="w-full">
-        <div>
-          <div className="">
-            <p>Location</p>
-            <Dropdown>
+      <div className="w-full flex">
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-1 w-60">
+            <p className="text-[#1e2b236f]">Location</p>
+            <Dropdown className="w-60">
               <DropdownTrigger>
                 <Button
                   variant="bordered"
-                  className="relative overflow-hidden cursor-pointer flex bg-white py-2 rounded-lg gap-1"
+                  className="relative overflow-hidden cursor-pointer flex bg-white py-2 rounded-lg gap-1 justify-between"
                 >
                   {location === null ? "Select Location" : location}
                   <ChevronDownIcon className="size-6 pt-1 text-[#3B5645]" />
@@ -60,7 +60,7 @@ export default function page() {
               <DropdownMenu
                 aria-label="Dynamic Actions"
                 items={locationItems}
-                className="bg-white w-48 overflow-hidden px-2 py-1 rounded-lg"
+                className="bg-white w-60 overflow-hidden px-2 py-1 rounded-lg"
               >
                 {(item) => (
                   <DropdownItem
@@ -74,13 +74,14 @@ export default function page() {
               </DropdownMenu>
             </Dropdown>
           </div>
-          <div className="">
-            <p>Location</p>
-            <Dropdown>
+
+          <div className="flex flex-col gap-1 w-40 relative">
+            <p className="text-[#1e2b236f]">Date</p>
+            <Dropdown className="w-40">
               <DropdownTrigger>
                 <Button
                   variant="bordered"
-                  className="relative overflow-hidden cursor-pointer flex bg-white py-2 rounded-lg gap-1"
+                  className="relative overflow-hidden cursor-pointer flex bg-white py-2 rounded-lg gap-1 justify-between"
                 >
                   {date === null ? "Select Date" : date}
                   <ChevronDownIcon className="size-6 pt-1 text-[#3B5645]" />
@@ -89,7 +90,7 @@ export default function page() {
               <DropdownMenu
                 aria-label="Dynamic Actions"
                 items={dateItems}
-                className="bg-white w-48 overflow-hidden px-2 py-1 rounded-lg"
+                className="bg-white overflow-hidden px-2 py-1 rounded-lg"
               >
                 {(item) => (
                   <DropdownItem
