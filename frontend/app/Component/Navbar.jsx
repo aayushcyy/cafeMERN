@@ -9,13 +9,15 @@ import {
 
 export default function MyNavbar() {
   return (
-    <div className="w-full flex justify-center pt-5">
+    <div className="w-full flex justify-center">
       <Navbar
         shouldHideOnScroll
-        className="flex  justify-between py-3 items-center text-[#1e2b23] shadow-[0_0_15px_3px_rgba(0,0,0,0.1)] bg-[#ffffffba] px-8 rounded-xl w-[85%]"
+        className="flex  justify-between py-3 items-center text-[#1e2b23]"
       >
         <NavbarBrand className="w-[25%]">
-          <p className="font-bold text-lg text-[#3a5c47]">CafeZiq5</p>
+          <Link className="font-bold text-lg text-[#3a5c47]" href="/">
+            CafeZiq5
+          </Link>
         </NavbarBrand>
 
         <NavbarContent className="hidden sm:flex gap-16 group" justify="center">
