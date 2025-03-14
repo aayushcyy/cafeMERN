@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+.custom-button {
+  position: relative;
+  overflow: hidden;
+}
