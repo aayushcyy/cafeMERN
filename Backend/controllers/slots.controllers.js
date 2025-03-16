@@ -2,6 +2,7 @@ import express from "express";
 import { Availability } from "../models/Availability.models.js";
 
 const slotsAvailable = async (req, res) => {
+  console.log(req.body);
   const { date, branch } = req.body;
   if (!date || !branch)
     return res.status(400).json({ msg: "pleage give date and branch" });

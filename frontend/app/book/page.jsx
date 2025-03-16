@@ -48,21 +48,30 @@ export default function page() {
       return console.log("Please fill date and location");
     }
 
-    const shortDate = date.substring(5).replace(/\s/g, "");
+    const shortDate =
+      date === "Today"
+        ? dayjs().format("ddd, D MMM YY").substring(5).replace(/\s/g, "")
+        : date.substring(5).replace(/\s/g, "");
+
     const shortBranch = location.includes("Samta") ? "samta" : "kota";
 
     const getSlots = async () => {
       try {
         const response = await fetch("http://localhost:4000/slots", {
-          method: "GET",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ date: shortDate, branch: shortBranch }),
         });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         const allSlots = await response.json();
-        setSlots(allSlots);
-        console.log(slots);
+        if (allSlots) {
+          setSlots(allSlots);
+          console.log(allSlots);
+        }
       } catch (error) {
         console.error("Error fetching slots:", error);
       }

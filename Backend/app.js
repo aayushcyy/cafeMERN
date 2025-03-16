@@ -11,7 +11,7 @@ const app = express();
 connectDB();
 
 // CORS and json middleware
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 // Home Route

@@ -3,6 +3,6 @@ import { slotsAvailable } from "../controllers/slots.controllers.js";
 
 const router = express.Router();
 
-router.get("/", slotsAvailable);
+router.post("/", slotsAvailable);
 
 export default router;
