@@ -42,6 +42,7 @@ export default function page() {
   const [location, setLocation] = useState(null);
   const [date, setDate] = useState(null);
   const [slots, setSlots] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!date || !location) {
@@ -53,10 +54,13 @@ export default function page() {
         ? dayjs().format("ddd, D MMM YY").substring(5).replace(/\s/g, "")
         : date.substring(5).replace(/\s/g, "");
 
+    console.log(shortDate);
+
     const shortBranch = location.includes("Samta") ? "samta" : "kota";
 
     const getSlots = async () => {
       try {
+        setLoading(true);
         const response = await fetch("http://localhost:4000/slots", {
           method: "POST",
           headers: {
@@ -69,8 +73,9 @@ export default function page() {
         }
         const allSlots = await response.json();
         if (allSlots) {
-          setSlots(allSlots);
-          console.log(allSlots);
+          setSlots(allSlots.doc.slots);
+          setLoading(false);
+          console.log(slots);
         }
       } catch (error) {
         console.error("Error fetching slots:", error);
@@ -150,18 +155,13 @@ export default function page() {
         <div className="h-screen flex">
           <div className="">
             <div className="flex flex-col gap-2 pt-1">
-              <SlotDiv slot="1PM - 2PM" />
-              <SlotDiv />
-              <SlotDiv available={false} />
-              <SlotDiv />
-              <SlotDiv />
-              <SlotDiv />
-              <SlotDiv />
-              <SlotDiv />
-              <SlotDiv />
-              <SlotDiv />
-              <SlotDiv />
-              <SlotDiv />
+              {slots === null
+                ? "Please Select the Branch and Date to see the available slots"
+                : slots.map((slot) => (
+                    <div key={slot._id}>
+                      <SlotDiv slot={slot.time} available={slot.isBooked} />
+                    </div>
+                  ))}
             </div>
           </div>
         </div>
