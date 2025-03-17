@@ -3,15 +3,20 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
+import { useRouter } from "next/navigation";
+import { Spinner } from "@heroui/react";
 
 export default function Page() {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(false);
 
     // Validation
     if (!fullName || !phone || !password) {
@@ -34,15 +39,39 @@ export default function Page() {
       return;
     }
 
-    // If everything is valid, log values
-    console.log("Full Name:", fullName);
-    console.log("Phone:", phone);
-    console.log("Password:", password);
+    const signUpUser = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: fullName,
+            phone: phone,
+            password: password,
+          }),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const userDetail = await response.json();
+        if (userDetail) {
+          console.log(userDetail);
+          localStorage.setItem("token", userDetail.token);
+          router.push("/book");
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("error registering user: ", error);
+      }
+    };
+    signUpUser();
 
-    // Clear form after successful submission
-    setFullName("");
-    setPhone("");
-    setPassword("");
+    // // Clear form after successful submission
+    // setFullName("");
+    // setPhone("");
+    // setPassword("");
     setErrorMessage("");
   };
 
@@ -108,14 +137,21 @@ export default function Page() {
             {errorMessage && (
               <p className="text-sm text-red-600">{errorMessage}</p>
             )}
-
-            <Button
-              color="primary"
-              className="w-full mt-3 bg-green-950 text-white rounded-lg py-1 text-lg cursor-pointer"
-              type="submit"
-            >
-              Register
-            </Button>
+            {loading ? (
+              <Spinner
+                classNames={{ label: "text-foreground mt-4" }}
+                label="dots"
+                variant="dots"
+              />
+            ) : (
+              <Button
+                color="primary"
+                className="w-full mt-3 bg-green-950 text-white rounded-lg py-1 text-lg cursor-pointer"
+                type="submit"
+              >
+                Register
+              </Button>
+            )}
           </form>
         </div>
       </div>

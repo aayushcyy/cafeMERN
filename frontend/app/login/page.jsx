@@ -3,14 +3,20 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
+import { useRouter } from "next/navigation";
+import { Spinner } from "@heroui/react";
 
 export default function Page() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     // Validation
     if (!phone || !password) {
@@ -28,9 +34,30 @@ export default function Page() {
       return;
     }
 
-    // If everything is valid, store in state and log
-    console.log("Phone:", phone);
-    console.log("Password:", password);
+    const loginUser = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ phone: phone, password: password }),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const userDetail = await response.json();
+        if (userDetail) {
+          console.log(userDetail);
+          localStorage.setItem("token", userDetail.token);
+          router.push("/book");
+        }
+      } catch (error) {
+        console.error("Error login user: ", error);
+      }
+    };
+    loginUser();
+    setLoading(false);
 
     // Clear form after successful submission
     setPhone("");
@@ -88,14 +115,22 @@ export default function Page() {
             {errorMessage && (
               <p className="text-sm text-red-600">{errorMessage}</p>
             )}
-
-            <Button
-              color="primary"
-              className="w-full mt-3 bg-green-950 text-white rounded-lg py-1 text-lg cursor-pointer"
-              type="submit"
-            >
-              Login
-            </Button>
+            {loading ? (
+              <Spinner
+                classNames={{ label: "text-foreground mt-4" }}
+                label="dots"
+                variant="dots"
+              />
+            ) : (
+              <Button
+                color="primary"
+                className="w-full mt-3 bg-green-950 text-white rounded-lg py-1 text-lg cursor-pointer"
+                type="submit"
+              >
+                Login
+              </Button>
+            )}
+            <span class="loader"></span>
           </form>
         </div>
       </div>

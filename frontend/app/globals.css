@@ -4,3 +4,28 @@
   position: relative;
   overflow: hidden;
 }
+
+.loader {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #0f4a0f;
+  box-shadow: 32px 0 #0f4a0f, -32px 0 #0f4a0f;
+  position: relative;
+  animation: flash 0.5s ease-out infinite alternate;
+}
+
+@keyframes flash {
+  0% {
+    background-color: #0f4a0f88;
+    box-shadow: 20px 0 #0f4a0f88, -20px 0 #0f4a0f;
+  }
+  50% {
+    background-color: #0f4a0f;
+    box-shadow: 20px 0 #0f4a0f88, -20px 0 #0f4a0f88;
+  }
+  100% {
+    background-color: #0f4a0f88;
+    box-shadow: 20px 0 #0f4a0f, -20px 0 #0f4a0f88;
+  }
+}
