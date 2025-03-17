@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { Spinner } from "@heroui/react";
 
 export default function Page() {
   const [phone, setPhone] = useState("");
@@ -116,11 +115,7 @@ export default function Page() {
               <p className="text-sm text-red-600">{errorMessage}</p>
             )}
             {loading ? (
-              <Spinner
-                classNames={{ label: "text-foreground mt-4" }}
-                label="dots"
-                variant="dots"
-              />
+              <span class="loader"></span>
             ) : (
               <Button
                 color="primary"
@@ -130,7 +125,6 @@ export default function Page() {
                 Login
               </Button>
             )}
-            <span class="loader"></span>
           </form>
         </div>
       </div>

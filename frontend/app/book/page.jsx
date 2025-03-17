@@ -65,6 +65,7 @@ export default function page() {
     const getSlots = async () => {
       try {
         setLoading(true);
+        setSlots(null);
         const response = await fetch("http://localhost:4000/slots", {
           method: "POST",
           headers: {
@@ -102,9 +103,9 @@ export default function page() {
   return (
     <div className="flex min-h-screen flex-col px-24 bg-[#EDF4F2] text-[#1e2b23]">
       <MyNavbar />
-      <div className="w-full flex pt-5 justify-center gap-20">
+      <div className="w-full flex pt-5 justify-center gap-10">
         {/* Input Div */}
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 w-1/2 pl-[20%]">
           {/* Location Selector */}
           <div className="flex flex-col gap-1 w-60">
             <p className="text-[#1e2b236f]">Location</p>
@@ -173,16 +174,22 @@ export default function page() {
             </Dropdown>
           </div>
         </div>
-        <div className="h-screen flex">
+        <div className="h-screen flex w-1/2">
           <div className="">
             <div className="flex flex-col gap-2 pt-1">
-              {slots === null
-                ? "Please Select the Branch and Date to see the available slots"
-                : slots.map((slot) => (
-                    <div key={slot._id} onClick={() => clickHandler(slot.time)}>
-                      <SlotDiv slot={slot.time} available={slot.isBooked} />
-                    </div>
-                  ))}
+              {slots === null ? (
+                loading ? (
+                  <span className="loader absolute left-52 top-48"></span>
+                ) : (
+                  "Please Select the Branch and Date to see the available slots"
+                )
+              ) : (
+                slots.map((slot) => (
+                  <div key={slot._id} onClick={() => clickHandler(slot.time)}>
+                    <SlotDiv slot={slot.time} available={slot.isBooked} />
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
