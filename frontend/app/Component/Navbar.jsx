@@ -47,7 +47,7 @@ export default function MyNavbar() {
         >
           <NavbarItem className="hidden lg:flex">
             <Link
-              href="#"
+              href="/login"
               className="border-[2px] border-[#dadada63] px-4 py-1.5 rounded-full"
             >
               Login
