@@ -15,7 +15,10 @@ export default function MyNavbar() {
         className="flex  justify-between py-3 items-center text-[#1e2b23]"
       >
         <NavbarBrand className="w-[25%]">
-          <Link className="font-bold text-lg text-[#3a5c47]" href="/">
+          <Link
+            className="font-bold text-lg text-[#3a5c47] font-montserrat"
+            href="/"
+          >
             CafeZiq5
           </Link>
         </NavbarBrand>

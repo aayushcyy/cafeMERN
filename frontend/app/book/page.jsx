@@ -12,6 +12,7 @@ import {
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import dayjs from "dayjs";
 import SlotDiv from "../Component/SlotsDiv";
+import { useRouter } from "next/navigation";
 
 const locationItems = [
   {
@@ -43,7 +44,10 @@ export default function page() {
   const [date, setDate] = useState(null);
   const [slots, setSlots] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [uniqueId, setUniqueId] = useState(null);
+  const router = useRouter();
 
+  //fetching slots
   useEffect(() => {
     if (!date || !location) {
       return console.log("Please fill date and location");
@@ -83,6 +87,17 @@ export default function page() {
     };
     getSlots();
   }, [location, date]);
+
+  const clickHandler = (slot) => {
+    if (date !== null) {
+      const day = date === "Today" ? dayjs().format("D") : date?.split(", ")[1];
+      const din = day?.split(" ")[0];
+      const hr = slot.slice(0, 2);
+      const branch = location.slice(0, 1);
+      const uniqueId = `${hr}${din}${branch}`;
+      router.push(`/book/${uniqueId}`);
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col px-24 bg-[#EDF4F2] text-[#1e2b23]">
@@ -140,10 +155,16 @@ export default function page() {
                 className="bg-white overflow-hidden px-2 py-1 rounded-lg"
               >
                 {(item) => (
+                  /// look here
+
                   <DropdownItem
                     key={item.key}
                     className="hover:bg-[#0000000f] rounded-lg"
-                    onClick={() => setDate(item.label)}
+                    onClick={() =>
+                      item.label === "Today"
+                        ? setDate("Today")
+                        : setDate(item.label)
+                    }
                   >
                     {item.label.slice(0, 11)}
                   </DropdownItem>
@@ -158,7 +179,7 @@ export default function page() {
               {slots === null
                 ? "Please Select the Branch and Date to see the available slots"
                 : slots.map((slot) => (
-                    <div key={slot._id}>
+                    <div key={slot._id} onClick={() => clickHandler(slot.time)}>
                       <SlotDiv slot={slot.time} available={slot.isBooked} />
                     </div>
                   ))}
