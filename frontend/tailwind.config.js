@@ -4,6 +4,8 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@heroui/react/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@heroui/theme/dist/components/form.js",
   ],
   theme: {
     extend: {
@@ -15,5 +17,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [heroui()],
 };

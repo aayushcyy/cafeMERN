@@ -1,6 +1,7 @@
 import { Montserrat } from "next/font/google";
 import { Raleway } from "next/font/google";
 import { Geist, Geist_Mono } from "next/font/google";
+import { HeroUIProvider } from "@heroui/react";
 
 import "./globals.css";
 
