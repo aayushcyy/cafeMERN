@@ -1,3 +1,6 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -8,6 +11,24 @@ import {
 } from "@heroui/react";
 
 export default function MyNavbar() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userDetails, setUserDetails] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      setLoggedIn(true);
+      fetchUserDetails(token);
+    }
+  }, []);
+
+  const fetchUserDetails = async (token) => {
+    try {
+      const response = await fetch("http://localhost:4000/auth/me");
+    } catch (error) {}
+  };
+
   return (
     <div className="w-full flex justify-center">
       <Navbar

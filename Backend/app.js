@@ -5,6 +5,7 @@ import cors from "cors";
 import slotsRouter from "./routes/Slots.routes.js";
 import bookingRouter from "./routes/Book.routes.js";
 import authRouter from "./routes/Auth.routes.js";
+import profileRouter from "./routes/Profile.routes.js";
 
 const app = express();
 
@@ -27,6 +28,9 @@ app.use("/book", bookingRouter);
 
 // authentication route
 app.use("/auth", authRouter);
+
+// user profile route
+app.use("/profile", profileRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`server is running on ${process.env.PORT}`);
