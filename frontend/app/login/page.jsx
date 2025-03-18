@@ -63,7 +63,6 @@ export default function Page() {
     router.push("/book");
     setLoading(false);
 
-    // Clear form after successful submission
     setPhone("");
     setPassword("");
     setErrorMessage("");

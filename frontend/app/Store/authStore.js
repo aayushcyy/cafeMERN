@@ -5,6 +5,24 @@ import { create } from "zustand";
 export const useStore = create((set) => ({
   user: null,
 
+  register: async (name, phone, password) => {
+    try {
+      const response = await fetch("http://localhost:4000/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone, password }),
+      });
+
+      if (!response.ok) throw new Error("Invalid credentials");
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
+
+      set({ user: data.user });
+    } catch (error) {
+      console.error("Login failed: ", error);
+    }
+  },
+
   login: async (phone, password) => {
     try {
       const response = await fetch("http://localhost:4000/auth/login", {
