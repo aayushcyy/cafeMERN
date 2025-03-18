@@ -36,11 +36,11 @@ const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const fetchUser = useStore((state) => state.fetchUser);
+  const { user, fetchUser } = useStore();
 
   useEffect(() => {
     fetchUser();
-  }, []);
+  }, [user]);
 
   return (
     <html lang="en">
