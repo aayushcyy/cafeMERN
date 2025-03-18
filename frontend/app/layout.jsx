@@ -1,7 +1,8 @@
 import { Montserrat } from "next/font/google";
 import { Raleway } from "next/font/google";
 import { Geist, Geist_Mono } from "next/font/google";
-import { HeroUIProvider } from "@heroui/react";
+import { useEffect } from "react";
+import { useStore } from "./Store/authStore.js";
 
 import "./globals.css";
 
@@ -33,6 +34,12 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const fetchUser = useStore((state) => state.fetchUser);
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   return (
     <html lang="en">
       <body
