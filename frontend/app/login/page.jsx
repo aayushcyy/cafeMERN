@@ -22,16 +22,19 @@ export default function Page() {
     // Validation
     if (!phone || !password) {
       setErrorMessage("All fields are required.");
+      setLoading(false);
       return;
     }
 
     if (!/^\d{10}$/.test(phone)) {
       setErrorMessage("Phone number must be exactly 10 digits.");
+      setLoading(false);
       return;
     }
 
     if (password.length < 6) {
       setErrorMessage("Password must be at least 6 characters.");
+      setLoading(false);
       return;
     }
 

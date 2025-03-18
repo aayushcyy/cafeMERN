@@ -13,6 +13,7 @@ import { useStore } from "../Store/authStore.js";
 import {
   PencilIcon,
   ArrowLeftStartOnRectangleIcon,
+  UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { motion } from "motion/react";
 
@@ -30,7 +31,7 @@ export default function MyNavbar() {
   useEffect(() => {
     function handleClickOutside(event) {
       if (sliderRef.current && !sliderRef.current.contains(event.target)) {
-        setOpenDrawer(false); // Close drawer when clicking outside
+        setOpenDrawer(false);
       }
     }
 
@@ -76,7 +77,7 @@ export default function MyNavbar() {
         {user ? (
           <NavbarContent
             justify="end"
-            className="gap-10 w-[25%] flex justify-end"
+            className="gap-10 w-[25%] flex justify-end items-center"
           >
             <NavbarItem>
               <Button className="bg-[#3b5645] px-4 py-1.5 cursor-pointer text-white rounded-full">
@@ -84,13 +85,8 @@ export default function MyNavbar() {
               </Button>
             </NavbarItem>
 
-            <NavbarItem>
-              <div
-                className="bg-[#3b5645] text-white px-4 py-1.5 rounded-[50%]"
-                onClick={handleDrawer}
-              >
-                {user.name || "Profile"}
-              </div>
+            <NavbarItem onClick={handleDrawer}>
+              <UserCircleIcon className="size-11 cursor-pointer  text-[#162a1d]" />
             </NavbarItem>
           </NavbarContent>
         ) : (
@@ -126,8 +122,10 @@ export default function MyNavbar() {
                 AC
               </div>
               <div className="flex flex-col ">
-                <p className="text-2xl font-semibold">{"Aayush Chaudhary"}</p>
-                <p className="font-semibold text-[#696969]">+91 8889629371</p>
+                <p className="text-2xl font-semibold">{user.user.name}</p>
+                <p className="font-semibold text-[#696969]">
+                  +91 {user.user.phone}
+                </p>
               </div>
               <div className="pt-2">
                 <PencilIcon className="size-5 stroke-2 pt-1 cursor-pointer text-[#3B5645]" />
@@ -136,414 +134,39 @@ export default function MyNavbar() {
             <div className="flex flex-col w-full gap-3 bg-white p-3 rounded-lg overflow-y-scroll max-h-[65vh]">
               <p>Booking Details</p>
               <div className="flex flex-col gap-1">
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
+                {user.user.bookings.map((booking) => {
+                  <div
+                    className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center"
+                    key={booking.bookingId}
+                  >
+                    <div className="flex gap-3 items-center">
+                      <div>
+                        <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
+                          <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
+                        </div>
+                      </div>
+                      <div className="flex gap-4">
+                        <div className="flex flex-col">
+                          <p className="text-xs font-[500]">
+                            {booking.bookingId}
+                          </p>
+                          <p className="text-xs font-semibold">
+                            {booking.bookingDate}
+                          </p>
+                        </div>
+                        <div className="flex flex-col">
+                          <p className="text-xs font-[500]">{booking.branch}</p>
+                          <p className="text-xs font-semibold">
+                            {booking.slot}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
+                    <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
+                      Upcoming
                     </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
-                <div className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center">
-                  <div className="flex gap-3 items-center">
-                    <div>
-                      <div className="border-[1px] border-[#62626269] w-6 h-6 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">5P20S</p>
-                        <p className="text-xs font-semibold">20 Mar 25</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs font-[500]">
-                          Samta Colony, Raipur
-                        </p>
-                        <p className="text-xs font-semibold">4PM - 5PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                    Upcoming
-                  </div>
-                </div>
+                  </div>;
+                })}
               </div>
             </div>
             <div className="flex items-center text-red-500 mt-12 cursor-pointer">
