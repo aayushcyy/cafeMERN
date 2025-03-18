@@ -8,11 +8,18 @@ import {
   NavbarItem,
   Link,
   Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from "@heroui/react";
+import { useStore } from "../Store/authStore.js";
 
 export default function MyNavbar() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
+
+  const { user, logout } = useStore();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -66,19 +73,37 @@ export default function MyNavbar() {
           justify="end"
           className="gap-10 w-[25%] flex justify-end"
         >
-          <NavbarItem className="hidden lg:flex">
-            <Link
-              href="/login"
-              className="border-[2px] border-[#dadada63] px-4 py-1.5 rounded-full"
-            >
-              Login
-            </Link>
-          </NavbarItem>
+          {user ? (
+            <Dropdown>
+              <DropdownTrigger>
+                <Button className="bg-[#3b5645] text-white px-4 py-1.5 rounded-full">
+                  {user.name || "Profile"}
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu className="bg-black">
+                <DropdownItem>
+                  <span className="font-bold text-white">{user.name}</span>
+                </DropdownItem>
+                <DropdownItem>
+                  <span className="text-white">{user.phone}</span>
+                </DropdownItem>
+                <DropdownItem onClick={logout} className="text-red-500">
+                  Logout
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          ) : (
+            <NavbarItem>
+              <Link
+                href="/login"
+                className="border-[2px] border-[#dadada63] px-4 py-1.5 rounded-full"
+              >
+                Login
+              </Link>
+            </NavbarItem>
+          )}
           <NavbarItem>
-            <Button
-              className="bg-[#3b5645] px-4 py-1.5 cursor-pointer text-white rounded-full"
-              variant="shadow"
-            >
+            <Button className="bg-[#3b5645] px-4 py-1.5 cursor-pointer text-white rounded-full">
               Book Now
             </Button>
           </NavbarItem>

@@ -4,12 +4,14 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
+import { useStore } from "../Store/authStore";
 
 export default function Page() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const { login } = useStore();
 
   const router = useRouter();
 
