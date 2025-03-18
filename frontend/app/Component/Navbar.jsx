@@ -27,16 +27,18 @@ export default function MyNavbar() {
     setOpenDrawer(true);
   };
 
-  // not working
   useEffect(() => {
-    if (!user === null) {
-      setLoggedIn(true);
-      console.log("user is logged in: user: ", user);
-      console.log("loggedIn value is ", loggedIn);
-    } else {
-      setLoggedIn(false);
+    function handleClickOutside(event) {
+      if (sliderRef.current && !sliderRef.current.contains(event.target)) {
+        setOpenDrawer(false); // Close drawer when clicking outside
+      }
     }
-  }, [user]);
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="w-full flex justify-center">
