@@ -11,7 +11,7 @@ export default function Page() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useStore();
+  const { login, user } = useStore();
 
   const router = useRouter();
 
@@ -38,29 +38,6 @@ export default function Page() {
       return;
     }
 
-    // const loginUser = async () => {
-    //   try {
-    //     const response = await fetch("http://localhost:4000/auth/login", {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({ phone: phone, password: password }),
-    //     });
-    //     if (!response.ok) {
-    //       throw new Error(`HTTP error! Status: ${response.status}`);
-    //     }
-    //     const userDetail = await response.json();
-    //     if (userDetail) {
-    //       console.log(userDetail);
-    //       localStorage.setItem("token", userDetail.token);
-    //       router.push("/book");
-    //     }
-    //   } catch (error) {
-    //     console.error("Error login user: ", error);
-    //   }
-    // };
-    // loginUser();
     login(phone, password);
     router.refresh();
     router.push("/book");

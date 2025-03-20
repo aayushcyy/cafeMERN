@@ -122,19 +122,21 @@ export default function MyNavbar() {
                 AC
               </div>
               <div className="flex flex-col ">
-                <p className="text-2xl font-semibold">{user.user.name}</p>
+                <p className="text-2xl font-semibold">
+                  {user?.user.name ?? "NA"}
+                </p>
                 <p className="font-semibold text-[#696969]">
-                  +91 {user.user.phone}
+                  +91 {user?.user.phone ?? "NA"}
                 </p>
               </div>
               <div className="pt-2">
                 <PencilIcon className="size-5 stroke-2 pt-1 cursor-pointer text-[#3B5645]" />
               </div>
             </div>
-            <div className="flex flex-col w-full gap-3 bg-white p-3 rounded-lg overflow-y-scroll max-h-[65vh]">
+            <div className="flex flex-col w-full gap-3 bg-white p-3 rounded-lg overflow-y-scroll h-[65vh]">
               <p>Booking Details</p>
               <div className="flex flex-col gap-1">
-                {user.user.bookings.map((booking) => {
+                {user.user.bookings.map((booking) => (
                   <div
                     className="flex rounded-lg border-[1px] border-[#62626245] py-1 px-2 justify-between items-center"
                     key={booking.bookingId}
@@ -165,13 +167,15 @@ export default function MyNavbar() {
                     <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
                       Upcoming
                     </div>
-                  </div>;
-                })}
+                  </div>
+                ))}
               </div>
             </div>
             <div className="flex items-center text-red-500 mt-12 cursor-pointer">
               <ArrowLeftStartOnRectangleIcon className="size-6 pt-1  text-[#162a1d]" />
-              <p className="hover:underline">Logout</p>
+              <p className="hover:underline" onClick={() => logout()}>
+                Logout
+              </p>
             </div>
           </motion.div>
         </div>
