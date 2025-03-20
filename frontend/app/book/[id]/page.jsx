@@ -1,22 +1,27 @@
 "use client";
 
 import MyNavbar from "@/app/Component/Navbar";
-import React from "react";
+import React, { useState } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { Button } from "@heroui/react";
 import { useStore } from "@/app/Store/authStore";
 import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function page() {
+  const [msg, setMsg] = useState("");
+  const [loading, setLoading] = useState(false);
   const { bookingDetail } = useStore();
+  const router = useRouter();
 
   const { id } = useParams();
   const { user } = useStore();
 
   const handleClick = async () => {
-    console.log(user);
-    console.log(bookingDetail);
+    // console.log(user);
+    // console.log(bookingDetail);
     if (user && bookingDetail) {
+      setLoading(true);
       try {
         const token = localStorage.getItem("token");
         console.log("Token:", token);
@@ -39,10 +44,15 @@ export default function page() {
         if (!response.ok)
           throw new Error("Invalid credentials, response: ", response);
         const data = await response.json();
+        setMsg("Booking Successful!");
+        setTimeout(() => {
+          router.push("/book");
+        }, 1500);
         console.log(data);
       } catch (error) {
         console.error("Booking failed ", error);
       }
+      setLoading(false);
     }
   };
   return (
@@ -107,12 +117,22 @@ export default function page() {
                   transaction.
                 </p>
               </div>
-              <Button
-                className="text-xl py-2 text-center w-[373px] rounded-lg mt-2 bg-[#2f4637] text-white cursor-pointer"
-                onClick={handleClick}
-              >
-                Proceed to Pay
-              </Button>
+              {msg ? (
+                <div className="w-full items-center justify-center flex relative py-6 text-sm">
+                  {msg}
+                </div>
+              ) : loading ? (
+                <div className="w-full items-center justify-center flex relative py-6">
+                  <span className="loader3 absolute left-0 top-0"></span>
+                </div>
+              ) : (
+                <Button
+                  className="text-xl py-2 text-center w-[373px] rounded-lg mt-2 bg-[#2f4637] text-white cursor-pointer"
+                  onClick={handleClick}
+                >
+                  Proceed to Pay
+                </Button>
+              )}
             </div>
           </div>
         </div>

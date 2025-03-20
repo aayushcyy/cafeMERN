@@ -55,3 +55,29 @@
     box-shadow: 20px 0 #0f4a0f, -20px 0 #0f4a0f88;
   }
 }
+
+.loader3 {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #0f4a0f;
+  box-shadow: 30px 0 #0f4a0f, -30px 0 #0f4a0f;
+  position: relative;
+  animation: loader3 0.5s ease-out infinite alternate;
+  z-index: 1000;
+}
+
+@keyframes loader3 {
+  0% {
+    background-color: #0f4a0f88;
+    box-shadow: 18px 0 #0f4a0f88, -18px 0 #0f4a0f;
+  }
+  50% {
+    background-color: #0f4a0f;
+    box-shadow: 18px 0 #0f4a0f88, -18px 0 #0f4a0f88;
+  }
+  100% {
+    background-color: #0f4a0f88;
+    box-shadow: 18px 0 #0f4a0f, -18px 0 #0f4a0f88;
+  }
+}
