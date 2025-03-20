@@ -16,17 +16,37 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { motion } from "motion/react";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 export default function MyNavbar() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
   const sliderRef = useRef();
 
+  dayjs.extend(customParseFormat);
+
   const { user, logout } = useStore();
 
   const handleDrawer = () => {
     setOpenDrawer(true);
   };
+
+  function hasTimePassed(dateStr, timeStr) {
+    const day = dateStr.slice(0, 2);
+    const month = dateStr.slice(2, 5).toLowerCase();
+    const monthFormatted = month.charAt(0).toUpperCase() + month.slice(1);
+    const year = "20" + dateStr.slice(5, 7);
+    const startTime = timeStr.split(" - ")[0];
+
+    // Corrected Date Parsing
+    const dateTimeStr = `${day} ${monthFormatted} ${year} ${startTime}`;
+    const eventDate = dayjs(dateTimeStr, "DD MMM YYYY hA");
+
+    const now = dayjs();
+
+    return eventDate.isValid() ? eventDate.isBefore(now) : false;
+  }
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -172,9 +192,13 @@ export default function MyNavbar() {
                         </div>
                       </div>
                     </div>
-                    <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
-                      Upcoming
-                    </div>
+                    {booking.bookingDate &&
+                      booking.slot &&
+                      !hasTimePassed(booking.bookingDate, booking.slot) && (
+                        <div className="text-[9px] text-green-500 border-[1px] border-[#62626269] py-0.5 px-1.5 rounded-lg">
+                          Upcoming
+                        </div>
+                      )}
                   </div>
                 ))}
               </div>
