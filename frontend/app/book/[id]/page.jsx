@@ -18,9 +18,15 @@ export default function page() {
     console.log(bookingDetail);
     if (user && bookingDetail) {
       try {
+        const token = localStorage.getItem("token");
+        console.log("Token:", token);
+
         const response = await fetch(`http://localhost:4000/book/${id}`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({
             name: user.user.name,
             phone: user.user.phone,
@@ -30,7 +36,8 @@ export default function page() {
           }),
         });
 
-        if (!response.ok) throw new Error("Invalid credentials");
+        if (!response.ok)
+          throw new Error("Invalid credentials, response: ", response);
         const data = await response.json();
         console.log(data);
       } catch (error) {

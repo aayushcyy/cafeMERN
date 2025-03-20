@@ -107,7 +107,7 @@ export default function page() {
         setBookingDetail({
           date: date === "Today" ? dayjs().format("DMMMYY") : date,
           slot: slot,
-          branch: location,
+          branch: location.includes("Samta") ? "samta" : "kota",
         });
         const day =
           date === "Today" ? dayjs().format("D") : date?.split(", ")[1];
