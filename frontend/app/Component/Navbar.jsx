@@ -115,7 +115,7 @@ export default function MyNavbar() {
         <div className="drawer w-full bg-[#00000038] h-screen absolute top-0 right-0 flex justify-end z-20 text-green-950">
           <motion.div
             ref={sliderRef}
-            className="w-[30%] bg-pink-100 px-6 py-5 flex flex-col gap-2"
+            className="w-[30%] bg-gray-200 px-6 py-5 flex flex-col gap-2"
           >
             <div className="flex w-full gap-3 bg-white p-3 rounded-lg">
               <div className="px-3.5 bg-green-950 text-white py-3.5 text-center text-3xl rounded-full">
@@ -147,17 +147,25 @@ export default function MyNavbar() {
                           <div className="w-2 h-2 rounded-full bg-[#032e15dc]"></div>
                         </div>
                       </div>
-                      <div className="flex gap-4">
+                      <div className="flex gap-5">
                         <div className="flex flex-col">
-                          <p className="text-xs font-[500]">
+                          <p className="text-xs font-[500] text-green-600">
                             {booking.bookingId}
                           </p>
                           <p className="text-xs font-semibold">
-                            {booking.bookingDate}
+                            {booking.bookingDate.replace(
+                              /(\d{2})([a-z])(\w{2})(\d{2})/,
+                              (_, d, m, rest, y) =>
+                                `${d} ${m.toUpperCase()}${rest} ${y}`
+                            )}
                           </p>
                         </div>
                         <div className="flex flex-col">
-                          <p className="text-xs font-[500]">{booking.branch}</p>
+                          <p className="text-xs font-[500]">
+                            {booking.branch.includes("samta")
+                              ? "Samta Colony, Raipur"
+                              : "Kota Chowk, Raipur"}
+                          </p>
                           <p className="text-xs font-semibold">
                             {booking.slot}
                           </p>
