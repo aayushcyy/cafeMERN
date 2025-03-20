@@ -16,6 +16,27 @@ export default function page() {
   const handleClick = async () => {
     console.log(user);
     console.log(bookingDetail);
+    if (user && bookingDetail) {
+      try {
+        const response = await fetch(`http://localhost:4000/book/${id}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: user.user.name,
+            phone: user.user.phone,
+            branch: bookingDetail.branch,
+            date: bookingDetail.date,
+            slot: bookingDetail.slot,
+          }),
+        });
+
+        if (!response.ok) throw new Error("Invalid credentials");
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error("Booking failed ", error);
+      }
+    }
   };
   return (
     <div className="flex min-h-screen flex-col px-24 bg-[#EDF4F2] text-[#1e2b23] relative w-full">

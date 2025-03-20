@@ -104,7 +104,11 @@ export default function page() {
     const isLoggedIn = !!(await user);
     if (isLoggedIn) {
       if (date !== null) {
-        setBookingDetail({ date: date, slot: slot, branch: location });
+        setBookingDetail({
+          date: date === "Today" ? dayjs().format("DMMMYY") : date,
+          slot: slot,
+          branch: location,
+        });
         const day =
           date === "Today" ? dayjs().format("D") : date?.split(", ")[1];
         const din = day?.split(" ")[0];
