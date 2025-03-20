@@ -4,6 +4,7 @@ import { create } from "zustand";
 
 export const useStore = create((set) => ({
   user: null,
+  bookingDetail: null,
 
   register: async (name, phone, password) => {
     try {
@@ -65,5 +66,9 @@ export const useStore = create((set) => ({
   logout: () => {
     localStorage.removeItem("token");
     set({ user: null });
+  },
+
+  setBookingDetail: ({ date, slot, branch }) => {
+    set({ bookingDetail: { date, slot, branch } });
   },
 }));

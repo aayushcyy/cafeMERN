@@ -4,8 +4,19 @@ import MyNavbar from "@/app/Component/Navbar";
 import React from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { Button } from "@heroui/react";
+import { useStore } from "@/app/Store/authStore";
+import { useParams } from "next/navigation";
 
-export default function page({ params }) {
+export default function page() {
+  const { bookingDetail } = useStore();
+
+  const { id } = useParams();
+  const { user } = useStore();
+
+  const handleClick = async () => {
+    console.log(user);
+    console.log(bookingDetail);
+  };
   return (
     <div className="flex min-h-screen flex-col px-24 bg-[#EDF4F2] text-[#1e2b23] relative w-full">
       <MyNavbar />
@@ -16,24 +27,31 @@ export default function page({ params }) {
               <div className="flex flex-col w-[28%] bg-white">
                 <div className="px-5 py-3">
                   <p className="uppercase text-green-700">Booking Summary</p>
-                  <p className="italic text-green-800 font-medium">
-                    {params.id}
+                  <p className="italic text-green-800 font-medium">{id}</p>
+                  <p className="text-green-950">
+                    Name: <span className="italic">{user.user.name}</span>
                   </p>
                   <p className="text-green-950">
-                    Name: <span className="italic">Aayush Chaudhary</span>
+                    Phone: <span className="italic">+91 {user.user.phone}</span>
                   </p>
                   <p className="text-green-950">
-                    Phone: <span className="italic">88896 29335</span>
+                    Branch:{" "}
+                    <span className="italic">
+                      {bookingDetail?.branch ?? "N/A"}
+                    </span>
                   </p>
                   <p className="text-green-950">
-                    Branch: <span className="italic">Samta Colony, Raipur</span>
-                  </p>
-                  <p className="text-green-950">
-                    Date: <span className="italic">17 Mar 25</span>
+                    Date:{" "}
+                    <span className="italic">
+                      {bookingDetail?.date ?? "N/A"}
+                    </span>
                   </p>
                   <div className="flex justify-between">
                     <p className="text-green-950">
-                      Slot: <span className="italic">2PM - 3PM (1hr)</span>
+                      Slot:{" "}
+                      <span className="italic">
+                        {bookingDetail?.slot ?? "N/A"}(1hr)
+                      </span>
                     </p>
                     <p>₹200</p>
                   </div>
@@ -61,7 +79,10 @@ export default function page({ params }) {
                   transaction.
                 </p>
               </div>
-              <Button className="text-xl py-2 text-center w-[373px] rounded-lg mt-2 bg-[#2f4637] text-white cursor-pointer">
+              <Button
+                className="text-xl py-2 text-center w-[373px] rounded-lg mt-2 bg-[#2f4637] text-white cursor-pointer"
+                onClick={handleClick}
+              >
                 Proceed to Pay
               </Button>
             </div>

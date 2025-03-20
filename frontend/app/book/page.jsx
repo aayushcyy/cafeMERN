@@ -13,6 +13,8 @@ import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import dayjs from "dayjs";
 import SlotDiv from "../Component/SlotsDiv";
 import { useRouter } from "next/navigation";
+import { useStore } from "../Store/authStore.js";
+import BigLoader from "../Component/BigLoader";
 
 const locationItems = [
   {
@@ -44,8 +46,13 @@ export default function page() {
   const [date, setDate] = useState(null);
   const [slots, setSlots] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [uniqueId, setUniqueId] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [anotherLoading, setAnotherLoading] = useState(false);
   const router = useRouter();
+
+  const { user, setBookingDetail } = useStore();
 
   //fetching slots
   useEffect(() => {
@@ -79,30 +86,43 @@ export default function page() {
         const allSlots = await response.json();
         if (allSlots) {
           setSlots(allSlots.doc.slots);
-          setLoading(false);
           console.log(slots);
         }
       } catch (error) {
         console.error("Error fetching slots:", error);
+        setErrorMsg(
+          "Error getting the slots availability! Please try after sometimes."
+        );
       }
+      setLoading(false);
     };
     getSlots();
   }, [location, date]);
 
-  const clickHandler = (slot) => {
-    if (date !== null) {
-      const day = date === "Today" ? dayjs().format("D") : date?.split(", ")[1];
-      const din = day?.split(" ")[0];
-      const hr = slot.slice(0, 2);
-      const branch = location.slice(0, 1);
-      const uniqueId = `${hr}${din}${branch}`;
-      router.push(`/book/${uniqueId}`);
+  const clickHandler = async (slot) => {
+    setAnotherLoading(true);
+    const isLoggedIn = !!(await user);
+    if (isLoggedIn) {
+      if (date !== null) {
+        setBookingDetail({ date: date, slot: slot, branch: location });
+        const day =
+          date === "Today" ? dayjs().format("D") : date?.split(", ")[1];
+        const din = day?.split(" ")[0];
+        const hr = slot.slice(0, 2);
+        const branch = location.slice(0, 1);
+        const uniqueId = `${hr}${din}${branch}`;
+        router.push(`/book/${uniqueId}`);
+      }
+    } else {
+      router.push(`/login`);
     }
+    setAnotherLoading(false);
   };
 
   return (
-    <div className="flex min-h-screen flex-col px-24 bg-[#EDF4F2] text-[#1e2b23]">
+    <div className="flex h-screen flex-col px-24 bg-[#EDF4F2] text-[#1e2b23]">
       <MyNavbar />
+      {anotherLoading && <BigLoader />}
       <div className="w-full flex pt-5 justify-center gap-10">
         {/* Input Div */}
         <div className="flex flex-col gap-5 w-1/2 pl-[20%]">
@@ -174,12 +194,14 @@ export default function page() {
             </Dropdown>
           </div>
         </div>
-        <div className="h-screen flex w-1/2">
+        <div className=" flex w-1/2">
           <div className="">
             <div className="flex flex-col gap-2 pt-1">
               {slots === null ? (
                 loading ? (
                   <span className="loader absolute left-52 top-48"></span>
+                ) : errorMsg ? (
+                  errorMsg
                 ) : (
                   "Please Select the Branch and Date to see the available slots"
                 )

@@ -29,3 +29,29 @@
     box-shadow: 20px 0 #0f4a0f, -20px 0 #0f4a0f88;
   }
 }
+
+.loader2 {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #0f4a0f;
+  box-shadow: 32px 0 #0f4a0f, -32px 0 #0f4a0f;
+  position: absolute;
+  animation: loader 0.5s ease-out infinite alternate;
+  z-index: 1000;
+}
+
+@keyframes loader {
+  0% {
+    background-color: #0f4a0f88;
+    box-shadow: 20px 0 #0f4a0f88, -20px 0 #0f4a0f;
+  }
+  50% {
+    background-color: #0f4a0f;
+    box-shadow: 20px 0 #0f4a0f88, -20px 0 #0f4a0f88;
+  }
+  100% {
+    background-color: #0f4a0f88;
+    box-shadow: 20px 0 #0f4a0f, -20px 0 #0f4a0f88;
+  }
+}
