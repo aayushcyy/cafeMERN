@@ -121,7 +121,10 @@ export default function MyNavbar() {
             className="gap-10 w-[25%] flex justify-end items-center"
           >
             <NavbarItem>
-              <Button className="bg-[#3b5645] px-4 py-1.5 cursor-pointer text-white rounded-full">
+              <Button
+                className="bg-[#3b5645] px-4 py-1.5 cursor-pointer text-white rounded-full"
+                onClick={() => router.push("/book")}
+              >
                 Book Now
               </Button>
             </NavbarItem>
@@ -145,7 +148,10 @@ export default function MyNavbar() {
             </NavbarItem>
 
             <NavbarItem>
-              <Button className="bg-[#3b5645] px-4 py-1.5 cursor-pointer text-white rounded-full">
+              <Button
+                className="bg-[#3b5645] px-4 py-1.5 cursor-pointer text-white rounded-full"
+                onClick={() => router.push("/book")}
+              >
                 Book Now
               </Button>
             </NavbarItem>
