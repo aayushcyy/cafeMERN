@@ -47,13 +47,13 @@ export default function page() {
   const [slots, setSlots] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [uniqueId, setUniqueId] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showTryAgain, setShowTryAgain] = useState(false);
   const [anotherLoading, setAnotherLoading] = useState(false);
   const router = useRouter();
 
   const { user, setBookingDetail, bookingDetail } = useStore();
 
+  let getSlots;
   //fetching slots
   useEffect(() => {
     if (!date || !location) {
@@ -69,7 +69,7 @@ export default function page() {
 
     const shortBranch = location.includes("Samta") ? "samta" : "kota";
 
-    const getSlots = async () => {
+    getSlots = async () => {
       try {
         setLoading(true);
         setSlots(null);
@@ -90,9 +90,8 @@ export default function page() {
         }
       } catch (error) {
         console.error("Error fetching slots:", error);
-        setErrorMsg(
-          "Error getting the slots availability! Please try after sometimes."
-        );
+        setErrorMsg("Error getting the slots! Try Again.");
+        setShowTryAgain(true);
       }
       setLoading(false);
     };
@@ -220,7 +219,20 @@ export default function page() {
                 ) : errorMsg ? (
                   errorMsg
                 ) : (
-                  "Please Select the Branch and Date to see the available slots"
+                  <div className="flex flex-col justify-center items-center gap-3">
+                    <p>
+                      Please Select the Branch and Date to see the available
+                      slots.
+                    </p>
+                    {showTryAgain && (
+                      <Button
+                        className="px-3 py-2 text-xs font-semibold cursor-pointer bg-green-950 text-white rounded-lg"
+                        onClick={() => getSlots()}
+                      >
+                        Try Again
+                      </Button>
+                    )}
+                  </div>
                 )
               ) : (
                 slots.map((slot) => (
