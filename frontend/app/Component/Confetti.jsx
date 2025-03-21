@@ -29,7 +29,7 @@ export default function Confetti({ onComplete }) {
         refConfetti={confettiRef}
         className="fixed top-0 left-0 w-full h-full pointer-events-none"
       />
-      <div className="text-center bg-white p-6 rounded-lg shadow-xl">
+      <div className="text-center bg-white p-6 rounded-lg shadow-xl flex flex-col gap-1">
         <h2 className="text-2xl font-bold text-green-600">
           ✅Booking Successful!
         </h2>

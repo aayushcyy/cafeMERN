@@ -18,11 +18,13 @@ import {
 import { motion } from "motion/react";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import { useRouter } from "next/navigation";
 
 export default function MyNavbar() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
   const sliderRef = useRef();
+  const router = useRouter();
 
   dayjs.extend(customParseFormat);
 
@@ -47,6 +49,25 @@ export default function MyNavbar() {
 
     return eventDate.isValid() ? eventDate.isBefore(now) : false;
   }
+
+  // logout user
+  const handleLogout = () => {
+    setOpenDrawer(false);
+    router.push("/book");
+    logout();
+  };
+
+  // profile pic
+  const handleProfile = (name) => {
+    if (name.length > 2) {
+      const nameArr = name.split(" ");
+      const firstChar = nameArr[0].slice(0, 1);
+      const secondChar = nameArr[1].slice(0, 1);
+      return `${firstChar}${secondChar}`;
+    } else {
+      return name;
+    }
+  };
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -139,7 +160,7 @@ export default function MyNavbar() {
           >
             <div className="flex w-full gap-3 bg-white p-3 rounded-lg">
               <div className="px-3.5 bg-green-950 text-white py-3.5 text-center text-3xl rounded-full">
-                AC
+                {handleProfile(user.user.name)}
               </div>
               <div className="flex flex-col ">
                 <p className="text-2xl font-semibold">
@@ -205,7 +226,7 @@ export default function MyNavbar() {
             </div>
             <div className="flex items-center text-red-500 mt-12 cursor-pointer">
               <ArrowLeftStartOnRectangleIcon className="size-6 pt-1  text-[#162a1d]" />
-              <p className="hover:underline" onClick={() => logout()}>
+              <p className="hover:underline" onClick={handleLogout}>
                 Logout
               </p>
             </div>

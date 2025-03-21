@@ -49,7 +49,7 @@ export default function page() {
         setMsg("Booking Successful!");
         setTimeout(() => {
           router.push("/book");
-        }, 1500);
+        }, 2500);
         console.log(data);
       } catch (error) {
         console.error("Booking failed ", error);
@@ -121,7 +121,7 @@ export default function page() {
               </div>
               {msg ? (
                 <div className="w-full items-center justify-center flex relative py-6 text-sm font-semibold">
-                  {msg} <Confetti />
+                  <Confetti />
                 </div>
               ) : loading ? (
                 <div className="w-full items-center justify-center flex relative py-6">
