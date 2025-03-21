@@ -68,7 +68,7 @@ export const useStore = create((set) => ({
     set({ user: null });
   },
 
-  setBookingDetail: ({ date, slot, branch }) => {
-    set({ bookingDetail: { date, slot, branch } });
+  setBookingDetail: ({ date, slot, branch, dateForDb }) => {
+    set({ bookingDetail: { date, slot, branch, dateForDb } });
   },
 }));

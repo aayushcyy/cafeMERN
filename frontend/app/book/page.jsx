@@ -52,7 +52,7 @@ export default function page() {
   const [anotherLoading, setAnotherLoading] = useState(false);
   const router = useRouter();
 
-  const { user, setBookingDetail } = useStore();
+  const { user, setBookingDetail, bookingDetail } = useStore();
 
   //fetching slots
   useEffect(() => {
@@ -102,12 +102,25 @@ export default function page() {
   const clickHandler = async (slot) => {
     setAnotherLoading(true);
     const isLoggedIn = !!(await user);
+
     if (isLoggedIn) {
       if (date !== null) {
+        // formatting date for backend
+        let dateToSend;
+        if (date === "Today") {
+          dateToSend = dayjs().format("DMMMYY");
+        } else {
+          console.log(date);
+          const dateArr = date.slice(5, 14).split(" ");
+          const khazoor = `${dateArr[0]}${dateArr[1]}${dateArr[2]}`;
+          dateToSend = khazoor.toLowerCase();
+        }
+
         setBookingDetail({
           date: date === "Today" ? dayjs().format("DMMMYY") : date,
           slot: slot,
           branch: location.includes("Samta") ? "samta" : "kota",
+          dateForDb: dateToSend,
         });
         const day =
           date === "Today" ? dayjs().format("D") : date?.split(", ")[1];

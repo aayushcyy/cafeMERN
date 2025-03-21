@@ -23,8 +23,8 @@ export default function Page() {
       return;
     }
 
-    if (fullName.length < 3) {
-      setErrorMessage("Full name must be at least 3 characters.");
+    if (fullName.length < 1) {
+      setErrorMessage("Full name must be at least 2 characters.");
       return;
     }
 
@@ -58,12 +58,13 @@ export default function Page() {
         if (userDetail) {
           console.log(userDetail);
           localStorage.setItem("token", userDetail.token);
+          router.refresh();
           router.push("/book");
-          setLoading(false);
         }
       } catch (error) {
         console.error("error registering user: ", error);
       }
+      setLoading(false);
     };
     signUpUser();
 

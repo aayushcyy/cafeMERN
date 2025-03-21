@@ -22,9 +22,10 @@ export default function page() {
     // console.log(bookingDetail);
     if (user && bookingDetail) {
       setLoading(true);
+      console.log("1 user", user.user);
+      console.log("2 booking detail from zustand", bookingDetail);
       try {
         const token = localStorage.getItem("token");
-        console.log("Token:", token);
 
         const response = await fetch(`http://localhost:4000/book/${id}`, {
           method: "POST",
@@ -36,7 +37,7 @@ export default function page() {
             name: user.user.name,
             phone: user.user.phone,
             branch: bookingDetail.branch,
-            date: bookingDetail.date,
+            date: bookingDetail.dateForDb,
             slot: bookingDetail.slot,
           }),
         });
