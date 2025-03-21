@@ -1,12 +1,13 @@
 "use client";
 
-import MyNavbar from "@/app/Component/Navbar";
+import MyNavbar from "../../Component/Navbar";
 import React, { useState } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { Button } from "@heroui/react";
-import { useStore } from "@/app/Store/authStore";
+import { useStore } from "../../Store/authStore.js";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import Confetti from "../../Component/Confetti";
 
 export default function page() {
   const [msg, setMsg] = useState("");
@@ -119,8 +120,8 @@ export default function page() {
                 </p>
               </div>
               {msg ? (
-                <div className="w-full items-center justify-center flex relative py-6 text-sm">
-                  {msg}
+                <div className="w-full items-center justify-center flex relative py-6 text-sm font-semibold">
+                  {msg} <Confetti />
                 </div>
               ) : loading ? (
                 <div className="w-full items-center justify-center flex relative py-6">
