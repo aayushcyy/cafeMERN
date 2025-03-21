@@ -159,7 +159,7 @@ export default function MyNavbar() {
             className="w-[30%] bg-gray-200 px-6 py-5 flex flex-col gap-2"
           >
             <div className="flex w-full gap-3 bg-white p-3 rounded-lg">
-              <div className="px-3.5 bg-green-950 text-white py-3.5 text-center text-3xl rounded-full">
+              <div className="w-15 h-15 flex items-center justify-center bg-green-950 text-white text-center text-3xl rounded-full">
                 {handleProfile(user.user.name)}
               </div>
               <div className="flex flex-col ">
