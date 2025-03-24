@@ -8,6 +8,7 @@ import { useStore } from "../../Store/authStore.js";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Confetti from "../../Component/Confetti";
+import PaymentBtn from "../../Component/PaymentBtn.jsx";
 
 export default function page() {
   const [msg, setMsg] = useState("");
@@ -19,44 +20,43 @@ export default function page() {
   const { user } = useStore();
 
   const handleClick = async () => {
-    // console.log(user);
-    // console.log(bookingDetail);
     if (user && bookingDetail) {
       setLoading(true);
       console.log("1 user", user.user);
       console.log("2 booking detail from zustand", bookingDetail);
-      try {
-        const token = localStorage.getItem("token");
+      // try {
+      //   const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:4000/book/${id}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            name: user.user.name,
-            phone: user.user.phone,
-            branch: bookingDetail.branch,
-            date: bookingDetail.dateForDb,
-            slot: bookingDetail.slot,
-          }),
-        });
+      //   const response = await fetch(`http://localhost:4000/book/${id}`, {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //     body: JSON.stringify({
+      //       name: user.user.name,
+      //       phone: user.user.phone,
+      //       branch: bookingDetail.branch,
+      //       date: bookingDetail.dateForDb,
+      //       slot: bookingDetail.slot,
+      //     }),
+      //   });
 
-        if (!response.ok)
-          throw new Error("Invalid credentials, response: ", response);
-        const data = await response.json();
-        setMsg("Booking Successful!");
-        setTimeout(() => {
-          router.push("/book");
-        }, 2500);
-        console.log(data);
-      } catch (error) {
-        console.error("Booking failed ", error);
-      }
+      //   if (!response.ok)
+      //     throw new Error("Invalid credentials, response: ", response);
+      //   const data = await response.json();
+      //   setMsg("Booking Successful!");
+      //   setTimeout(() => {
+      //     router.push("/book");
+      //   }, 2500);
+      //   console.log(data);
+      // } catch (error) {
+      //   console.error("Booking failed ", error);
+      // }
       setLoading(false);
     }
   };
+
   return (
     <div className="flex min-h-screen flex-col px-24 bg-[#EDF4F2] text-[#1e2b23] relative w-full">
       <MyNavbar />
@@ -128,12 +128,13 @@ export default function page() {
                   <span className="loader3 absolute left-0 top-0"></span>
                 </div>
               ) : (
-                <Button
-                  className="text-xl py-2 text-center w-[373px] rounded-lg mt-2 bg-[#2f4637] text-white cursor-pointer"
-                  onClick={handleClick}
-                >
-                  Proceed to Pay
-                </Button>
+                // <Button
+                //   className="text-xl py-2 text-center w-[373px] rounded-lg mt-2 bg-[#2f4637] text-white cursor-pointer"
+                //   onClick={handleClick}
+                // >
+                //   Proceed to Pay
+                // </Button>
+                <PaymentBtn />
               )}
             </div>
           </div>
