@@ -85,20 +85,23 @@ export default function PaymentBtn() {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:4000/book/${id}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            name: user.user.name,
-            phone: user.user.phone,
-            branch: bookingDetail.branch,
-            date: bookingDetail.dateForDb,
-            slot: bookingDetail.slot,
-          }),
-        });
+        const response = await fetch(
+          `process.env.NEXT_PUBLIC_API_URL/book/${id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              name: user.user.name,
+              phone: user.user.phone,
+              branch: bookingDetail.branch,
+              date: bookingDetail.dateForDb,
+              slot: bookingDetail.slot,
+            }),
+          }
+        );
 
         if (!response.ok)
           throw new Error("Invalid credentials, response: ", response);

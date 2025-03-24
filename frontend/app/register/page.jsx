@@ -40,17 +40,20 @@ export default function Page() {
 
     const signUpUser = async () => {
       try {
-        const response = await fetch("http://localhost:4000/auth/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: fullName,
-            phone: phone,
-            password: password,
-          }),
-        });
+        const response = await fetch(
+          "process.env.NEXT_PUBLIC_API_URL/auth/register",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: fullName,
+              phone: phone,
+              password: password,
+            }),
+          }
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }

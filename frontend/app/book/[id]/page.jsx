@@ -27,7 +27,7 @@ export default function page() {
       // try {
       //   const token = localStorage.getItem("token");
 
-      //   const response = await fetch(`http://localhost:4000/book/${id}`, {
+      //   const response = await fetch(`process.env.NEXT_PUBLIC_API_URL/book/${id}`, {
       //     method: "POST",
       //     headers: {
       //       "Content-Type": "application/json",
