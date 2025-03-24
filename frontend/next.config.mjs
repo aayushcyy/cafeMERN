@@ -5,6 +5,9 @@ const nextConfig = {
   },
   reactStrictMode: true,
   trailingSlash: true,
+  experimental: {
+    appDir: true,
+  },
 };
 
 export default nextConfig;
