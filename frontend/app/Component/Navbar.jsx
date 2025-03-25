@@ -51,10 +51,10 @@ export default function MyNavbar() {
   }
 
   // logout user
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setOpenDrawer(false);
+    await logout();
     router.push("/book");
-    logout();
   };
 
   // profile pic

@@ -13,69 +13,67 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(false);
+    setErrorMessage(""); // Clear previous errors
+    setLoading(true);
 
     // Validation
     if (!fullName || !phone || !password) {
       setErrorMessage("All fields are required.");
+      setLoading(false);
       return;
     }
 
-    if (fullName.length < 1) {
+    if (fullName.length < 2) {
       setErrorMessage("Full name must be at least 2 characters.");
+      setLoading(false);
       return;
     }
 
     if (!/^\d{10}$/.test(phone)) {
       setErrorMessage("Phone number must be exactly 10 digits.");
+      setLoading(false);
       return;
     }
 
     if (password.length < 6) {
       setErrorMessage("Password must be at least 6 characters.");
+      setLoading(false);
       return;
     }
 
-    const signUpUser = async () => {
-      try {
-        const response = await fetch(
-          "process.env.NEXT_PUBLIC_API_URL/auth/register",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: fullName,
-              phone: phone,
-              password: password,
-            }),
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: fullName,
+            phone: phone,
+            password: password,
+          }),
         }
-        const userDetail = await response.json();
-        if (userDetail) {
-          console.log(userDetail);
-          localStorage.setItem("token", userDetail.token);
-          router.refresh();
-          router.push("/book");
-        }
-      } catch (error) {
-        console.error("error registering user: ", error);
-      }
-      setLoading(false);
-    };
-    signUpUser();
+      );
 
-    // // Clear form after successful submission
-    // setFullName("");
-    // setPhone("");
-    // setPassword("");
-    setErrorMessage("");
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const userDetail = await response.json();
+      localStorage.setItem("token", userDetail.token);
+
+      // ✅ Instead of router.refresh(), use window.location.reload()
+      window.location.href = "/book"; // Ensures full refresh after signup
+    } catch (error) {
+      console.error("Error registering user:", error);
+      setErrorMessage("Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -141,7 +139,7 @@ export default function Page() {
               <p className="text-sm text-red-600">{errorMessage}</p>
             )}
             {loading ? (
-              <span class="loader"></span>
+              <span className="loader"></span>
             ) : (
               <Button
                 color="primary"
