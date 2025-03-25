@@ -11,7 +11,7 @@ export default function Page() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login, user } = useStore();
+  const { login, user, setUser } = useStore();
 
   const router = useRouter();
 
@@ -38,7 +38,27 @@ export default function Page() {
       return;
     }
 
-    login(phone, password);
+    // login(phone, password);
+    const loginFnc = async (phone, password) => {
+      try {
+        const response = await fetch("http://localhost:4000/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone, password }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Invalid credentials");
+        }
+        const data = await response.json();
+        localStorage.setItem("token", data.token);
+
+        set({ user: data.user });
+      } catch (error) {
+        console.error("Login failed: ", error);
+      }
+    };
+
     router.refresh();
     router.push("/book");
     setLoading(false);
