@@ -17,31 +17,20 @@ import { useStore } from "../Store/authStore.js";
 import BigLoader from "../Component/BigLoader";
 
 const locationItems = [
-  {
-    key: "new",
-    label: "Samta Colony, Raipur",
-  },
-  {
-    key: "copy",
-    label: "Kota Chowk, Raipur",
-  },
+  { key: "new", label: "Samta Colony, Raipur" },
+  { key: "copy", label: "Kota Chowk, Raipur" },
 ];
+
 const dateItems = [
+  { key: "today", label: "Today" },
+  { key: "tomorrow", label: dayjs().add(1, "day").format("ddd, D MMM YY") },
   {
-    key: "today",
-    label: "Today",
-  },
-  {
-    key: "tomorrow",
-    label: dayjs().add(1, "day").format("ddd, D MMM YY"),
-  },
-  {
-    key: "after tommorow",
+    key: "after_tomorrow",
     label: dayjs().add(2, "day").format("ddd, D MMM YY"),
   },
 ];
 
-export default function page() {
+export default function Page() {
   const [location, setLocation] = useState(null);
   const [date, setDate] = useState(null);
   const [slots, setSlots] = useState(null);
@@ -51,13 +40,14 @@ export default function page() {
   const [anotherLoading, setAnotherLoading] = useState(false);
   const router = useRouter();
 
-  const { user, setBookingDetail, bookingDetail } = useStore();
+  const { user, setBookingDetail } = useStore();
 
-  let getSlots;
-  //fetching slots
-  useEffect(() => {
-    if (!date || !location) {
-      return console.log("Please fill date and location");
+  const fetchSlots = async () => {
+    if (!date || !location) return console.log("Please fill date and location");
+
+    if (!process.env.NEXT_PUBLIC_API_URL) {
+      console.error("API URL is not defined in environment variables.");
+      return;
     }
 
     const shortDate =
@@ -65,73 +55,68 @@ export default function page() {
         ? dayjs().format("ddd, D MMM YY").substring(5).replace(/\s/g, "")
         : date.substring(5).replace(/\s/g, "");
 
-    console.log(shortDate);
-
     const shortBranch = location.includes("Samta") ? "samta" : "kota";
 
-    getSlots = async () => {
-      try {
-        setLoading(true);
-        setSlots(null);
-        const response = await fetch("process.env.NEXT_PUBLIC_API_URL/slots", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ date: shortDate, branch: shortBranch }),
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const allSlots = await response.json();
-        if (allSlots) {
-          setSlots(allSlots.doc.slots);
-          console.log(slots);
-        }
-      } catch (error) {
-        console.error("Error fetching slots:", error);
-        setErrorMsg("Error getting the slots! Try Again.");
-        setShowTryAgain(true);
-      }
+    try {
+      setLoading(true);
+      setSlots(null);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/slots`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date: shortDate, branch: shortBranch }),
+      });
+
+      if (!response.ok)
+        throw new Error(`HTTP error! Status: ${response.status}`);
+
+      const allSlots = await response.json();
+      setSlots(allSlots?.doc?.slots || []);
+    } catch (error) {
+      console.error("Error fetching slots:", error);
+      setErrorMsg("Error getting the slots! Try Again.");
+      setShowTryAgain(true);
+    } finally {
       setLoading(false);
-    };
-    getSlots();
+    }
+  };
+
+  useEffect(() => {
+    fetchSlots();
   }, [location, date]);
 
   const clickHandler = async (slot) => {
     setAnotherLoading(true);
-    const isLoggedIn = !!(await user);
 
-    if (isLoggedIn) {
-      if (date !== null) {
-        // formatting date for backend
-        let dateToSend;
-        if (date === "Today") {
-          dateToSend = dayjs().format("DMMMYY");
-        } else {
-          console.log(date);
-          const dateArr = date.slice(5, 14).split(" ");
-          const khazoor = `${dateArr[0]}${dateArr[1]}${dateArr[2]}`;
-          dateToSend = khazoor.toLowerCase();
-        }
-
-        setBookingDetail({
-          date: date === "Today" ? dayjs().format("DMMMYY") : date,
-          slot: slot,
-          branch: location.includes("Samta") ? "samta" : "kota",
-          dateForDb: dateToSend,
-        });
-        const day =
-          date === "Today" ? dayjs().format("D") : date?.split(", ")[1];
-        const din = day?.split(" ")[0];
-        const hr = slot.slice(0, 2);
-        const branch = location.slice(0, 1);
-        const uniqueId = `${hr}${din}${branch}`;
-        router.push(`/book/${uniqueId}`);
-      }
-    } else {
+    if (!user) {
       router.push(`/login`);
+      setAnotherLoading(false);
+      return;
     }
+
+    if (!date) return;
+
+    let dateToSend;
+    if (date === "Today") {
+      dateToSend = dayjs().format("DMMMYY");
+    } else {
+      const dateArr = date.slice(5, 14).split(" ");
+      dateToSend = `${dateArr[0]}${dateArr[1]}${dateArr[2]}`.toLowerCase();
+    }
+
+    setBookingDetail({
+      date: date === "Today" ? dayjs().format("DMMMYY") : date,
+      slot: slot,
+      branch: location.includes("Samta") ? "samta" : "kota",
+      dateForDb: dateToSend,
+    });
+
+    const day = date === "Today" ? dayjs().format("D") : date?.split(", ")[1];
+    const din = day?.split(" ")[0];
+    const hr = slot.slice(0, 2);
+    const branch = location.slice(0, 1);
+    const uniqueId = `${hr}${din}${branch}`;
+
+    router.push(`/book/${uniqueId}`);
     setAnotherLoading(false);
   };
 
@@ -227,7 +212,7 @@ export default function page() {
                     {showTryAgain && (
                       <Button
                         className="px-3 py-2 text-xs font-semibold cursor-pointer bg-green-950 text-white rounded-lg"
-                        onClick={() => getSlots()}
+                        onClick={() => fetchSlots()}
                       >
                         Try Again
                       </Button>
@@ -246,8 +231,8 @@ export default function page() {
         </div>
       </div>
       {/* <div>
-        <p className="text-xs">Made with 💗 by Aayush Chuadhary</p>
-      </div> */}
+          <p className="text-xs">Made with 💗 by Aayush Chuadhary</p>
+        </div> */}
     </div>
   );
 }

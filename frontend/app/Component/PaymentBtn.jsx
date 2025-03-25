@@ -25,7 +25,7 @@ export default function PaymentBtn() {
     setLoading(true);
     const token = localStorage.getItem("token");
 
-    const res = await fetch("http://localhost:4000/payment/now", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/now`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ export default function PaymentBtn() {
         handler: async (response) => {
           // verify payment
           const verifyRes = await fetch(
-            `http://localhost:4000/payment/verify`,
+            `${process.env.NEXT_PUBLIC_API_URL}/payment/verify`,
             {
               method: "POST",
               headers: {
@@ -86,7 +86,7 @@ export default function PaymentBtn() {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-          `process.env.NEXT_PUBLIC_API_URL/book/${id}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/book/${id}`,
           {
             method: "POST",
             headers: {

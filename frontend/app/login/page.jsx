@@ -53,10 +53,10 @@ export default function Page() {
         }
         const data = await response.json();
         localStorage.setItem("token", data.token);
+        setUser(data.user);
         router.refresh();
         router.push("/book");
         setLoading(false);
-        set({ user: data.user });
       } catch (error) {
         console.error("Login failed: ", error);
       }
