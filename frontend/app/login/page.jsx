@@ -48,24 +48,27 @@ export default function Page() {
         });
 
         if (!response.ok) {
+          setErrorMessage("User doesn't exists! Please register.");
           throw new Error("Invalid credentials");
         }
         const data = await response.json();
         localStorage.setItem("token", data.token);
-
+        router.refresh();
+        router.push("/book");
+        setLoading(false);
         set({ user: data.user });
       } catch (error) {
         console.error("Login failed: ", error);
       }
     };
-
-    router.refresh();
-    router.push("/book");
+    loginFnc(phone, password);
+    // router.refresh();
+    // router.push("/book");
     setLoading(false);
 
-    setPhone("");
-    setPassword("");
-    setErrorMessage("");
+    // setPhone("");
+    // setPassword("");
+    // setErrorMessage("");
   };
 
   return (
