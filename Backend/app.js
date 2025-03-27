@@ -16,9 +16,9 @@ connectDB();
 app.use(
   cors({
     origin: [
-      "cafeziq.vercel.app",
-      "cafeziq-aayush-chaudharys-projects.vercel.app",
-      "cafeziq-a2ss07r11-aayush-chaudharys-projects.vercel.app",
+      "https://cafeziq.vercel.app",
+      "https://cafeziq-aayush-chaudharys-projects.vercel.app",
+      "https://cafeziq-a2ss07r11-aayush-chaudharys-projects.vercel.app",
       "https://cafeziq-git-master-aayush-chaudharys-projects.vercel.app/",
     ],
     credentials: true,
