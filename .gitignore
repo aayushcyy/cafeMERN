@@ -3,3 +3,4 @@ frontend/.env.local
 frontend/.env
 backend/.env
 node_modules/
+.vercel
