@@ -8,11 +8,14 @@ export const useStore = create((set) => ({
 
   register: async (name, phone, password) => {
     try {
-      const response = await fetch("http://localhost:4000/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone, password }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, phone, password }),
+        }
+      );
 
       if (!response.ok) throw new Error("Invalid credentials");
       const data = await response.json();
@@ -26,11 +29,14 @@ export const useStore = create((set) => ({
 
   login: async (phone, password) => {
     try {
-      const response = await fetch("http://localhost:4000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, password }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone, password }),
+        }
+      );
 
       if (!response.ok) throw new Error("Invalid credentials");
       const data = await response.json();
@@ -47,10 +53,13 @@ export const useStore = create((set) => ({
     if (!token) return;
 
     try {
-      const response = await fetch("http://localhost:4000/profile/me", {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/profile/me`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to fetch user");
 
