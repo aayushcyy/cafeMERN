@@ -13,17 +13,18 @@ const app = express();
 connectDB();
 
 // CORS and json middleware
-app.use(
-  cors({
-    origin: [
-      "https://cafeziq.vercel.app",
-      "https://cafeziq-aayush-chaudharys-projects.vercel.app",
-      "https://cafeziq-a2ss07r11-aayush-chaudharys-projects.vercel.app",
-      "https://cafeziq-git-master-aayush-chaudharys-projects.vercel.app/",
-    ],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: [
+//       "https://cafeziq.vercel.app",
+//       "https://cafeziq-aayush-chaudharys-projects.vercel.app",
+//       "https://cafeziq-a2ss07r11-aayush-chaudharys-projects.vercel.app",
+//       "https://cafeziq-git-master-aayush-chaudharys-projects.vercel.app/",
+//     ],
+//     credentials: true,
+//   })
+// );
+app.use(cors({ origin: "*", credentials: true }));
 app.use(express.json());
 
 // Home Route
