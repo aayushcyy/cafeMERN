@@ -4,7 +4,7 @@ const nextConfig = {
     domains: ["www.shutterstock.com"],
   },
   reactStrictMode: true,
-  trailingSlash: true,
+  trailingSlash: false,
   experimental: {},
 };
 
