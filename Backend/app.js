@@ -13,7 +13,15 @@ const app = express();
 connectDB();
 
 // CORS and json middleware
-app.use(cors({ origin: "*" }));
+app.use(
+  cors({
+    origin: [
+      "cafeziq.vercel.app",
+      "cafeziq-aayush-chaudharys-projects.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Home Route
